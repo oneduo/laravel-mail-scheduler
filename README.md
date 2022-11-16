@@ -4,7 +4,7 @@
 
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-![PHP](https://img.shields.io/badge/PHP-8-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-8.1-blue.svg)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/oneduo/laravel-mail-scheduler.svg)](https://packagist.org/packages/oneduo/laravel-mail-scheduler)
 [![Downloads](https://img.shields.io/packagist/dt/oneduo/laravel-mail-scheduler.svg)](https://packagist.org/packages/oneduo/laravel-mail-scheduler)
 [![Run tests](https://github.com/oneduo/laravel-mail-scheduler/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/oneduo/laravel-mail-scheduler/actions/workflows/tests.yml)
