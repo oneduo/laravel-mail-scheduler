@@ -32,3 +32,32 @@ it('fails to send scheduled emails without recipients', function () {
 
     expect($statuses->filter(fn(EmailStatus $status) => $status !== EmailStatus::ERROR))->toBeEmpty();
 });
+
+it('fails to send emails that exceeded max attempts', function () {
+    Mail::fake();
+
+    ScheduledEmail::query()->create([
+        'mailable' => mailable(),
+        'recipients' => recipients(),
+        'attempts' => config('mail-scheduler.max_attempts'),
+        'status' => EmailStatus::PENDING,
+    ]);
+
+    artisan(SendEmails::class)->assertOk();
+
+    Mail::assertNothingSent();
+});
+
+it('should not send emails which are already sent', function () {
+    Mail::fake();
+
+    ScheduledEmail::query()->create([
+        'mailable' => mailable(),
+        'recipients' => recipients(),
+        'status' => EmailStatus::SENT,
+    ]);
+
+    artisan(SendEmails::class)->assertOk();
+
+    Mail::assertNothingSent();
+});

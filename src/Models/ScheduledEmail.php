@@ -44,7 +44,7 @@ class ScheduledEmail extends Model
         'mailable' => SerializedMailable::class,
         'status' => EmailStatus::class,
         'attempts' => 'int',
-        'attempted_at' => 'datetime',
+        'attempted_at' => 'timestamp',
     ];
 
     public function source(): MorphTo

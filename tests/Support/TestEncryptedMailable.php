@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Oneduo\MailScheduler\Tests\Support;
 
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class TestMailable extends Mailable
+class TestEncryptedMailable extends Mailable implements ShouldBeEncrypted
 {
     public function envelope(): Envelope
     {

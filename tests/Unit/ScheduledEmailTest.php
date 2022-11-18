@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Oneduo\MailScheduler\Enums\EmailStatus;
 use Oneduo\MailScheduler\Exceptions\NotAMailable;
 use Oneduo\MailScheduler\Models\ScheduledEmail;
+use Oneduo\MailScheduler\Tests\Support\TestEncryptedMailable;
 use Oneduo\MailScheduler\Tests\Support\TestModel;
 use function Pest\Laravel\assertDatabaseHas;
 
@@ -80,4 +81,26 @@ it('json serializes scheduled emails with attribute', function () {
     ]);
 
     expect(json_encode($instance))->toBeJson();
+});
+
+it('should create a scheduled email instance for an encrypted mailable', function () {
+    $mail = encryptedMailable();
+
+    $recipients = recipients();
+
+    $mail = ScheduledEmail::fromMailable($mail, $recipients);
+
+    $mailable = $mail->getRawOriginal('mailable');
+
+    expect(unserialize(decrypt($mailable)))->toBeInstanceOf(TestEncryptedMailable::class);
+});
+
+it('it casts mailable when it implements encryption', function () {
+    $mail = encryptedMailable();
+
+    $recipients = recipients();
+
+    $mail = ScheduledEmail::fromMailable($mail, $recipients);
+
+    expect($mail->mailable)->toBeInstanceOf(TestEncryptedMailable::class);
 });
