@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneduo\MailScheduler\Models;
 
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Oneduo\MailScheduler\Casts\SerializedMailable;
@@ -69,5 +70,16 @@ class ScheduledEmail extends Model
                 'updated_at' => now(),
             ], $attributes)
         ))->jsonSerialize();
+    }
+
+    public static function fromMailable(Mailable $mailable, array $recipients, ?Model $source = null): static
+    {
+        return static::query()->create([
+            'mailable' => $mailable,
+            'recipients' => $recipients,
+            'status' => EmailStatus::PENDING,
+            'source_id' => $source?->getKey(),
+            'source_type' => $source?->getMorphClass(),
+        ]);
     }
 }

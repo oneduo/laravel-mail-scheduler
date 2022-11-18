@@ -23,10 +23,6 @@ class SerializedMailable implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes): ?Mailable
     {
-        if (!filled($value)) {
-            return null;
-        }
-
         return tap(unserialize($value), function ($mailable) {
             if (!$mailable instanceof Mailable) {
                 throw NotAMailable::instanceOf($mailable::class);
@@ -47,16 +43,11 @@ class SerializedMailable implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes): ?string
     {
-        if (!filled($value)) {
-            return null;
+        if (!$value instanceof Mailable) {
+            throw NotAMailable::instanceOf($value::class);
         }
 
-        return tap($value, function ($mailable) {
-            if (!$mailable instanceof Mailable) {
-                throw NotAMailable::instanceOf($mailable::class);
-            }
-
-            return serialize($mailable);
-        });
+        // todo encrypt with ShouldBeEncrypted
+        return serialize($value);
     }
 }

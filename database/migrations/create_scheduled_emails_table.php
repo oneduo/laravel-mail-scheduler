@@ -10,22 +10,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('scheduled_emails', function (Blueprint $table) {
+        Schema::create(config('mail-scheduler.table_name'), function (Blueprint $table) {
             $table->id();
-
             $table->json('recipients');
             $table->longText('mailable');
             $table->string('status')->index();
             $table->unsignedInteger('attempts')->default(0);
             $table->string('error')->nullable();
             $table->text('stacktrace')->nullable();
-            $table->dateTime('attempted_at')->nullable();
-            $table->unsignedBigInteger('source_id')->nullable();
-            $table->string('source_type')->nullable();
+            $table->nullableMorphs('source');
+            $table->timestamp('attempted_at')->nullable();
+            $table->timestamps();
 
             $table->index(['status', 'attempts', 'created_at']);
-
-            $table->timestamps();
         });
     }
 };

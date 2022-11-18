@@ -17,9 +17,9 @@ class SerializedObject implements CastsAttributes
      * @param  array  $attributes
      * @return mixed
      */
-    public function get($model, string $key, $value, array $attributes): mixed
+    public function get($model, string $key, $value, array $attributes): array
     {
-        return filled($value) ? unserialize($value) : null;
+        return filled($value) ? unserialize($value) : [];
     }
 
     /**
@@ -33,6 +33,6 @@ class SerializedObject implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes): ?string
     {
-        return filled($value) ? serialize($value) : null;
+        return filled($value) ? serialize($value) : serialize([]);
     }
 }
