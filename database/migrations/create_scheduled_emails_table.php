@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('error')->nullable();
             $table->text('stacktrace')->nullable();
             $table->nullableMorphs('source');
+            $table->boolean('encrypted')->default(false);
             $table->timestamp('attempted_at')->nullable();
+            $table->timestamp('send_at')->nullable();
             $table->timestamps();
 
             $table->index(['status', 'attempts', 'created_at']);

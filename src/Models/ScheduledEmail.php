@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneduo\MailScheduler\Models;
 
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Oneduo\MailScheduler\Casts\SerializedMailable;
@@ -19,9 +20,11 @@ use Oneduo\MailScheduler\Enums\EmailStatus;
  * @property ?string $error
  * @property ?string $stacktrace
  * @property ?\Carbon\Carbon $attempted_at
+ * @property ?\Carbon\Carbon $send_at
  * @property ?int $source_id
  * @property ?class-string $source_type
  * @property ?\Illuminate\Database\Eloquent\Model $source
+ * @property bool $encrypted
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -37,14 +40,17 @@ class ScheduledEmail extends Model
         'attempted_at',
         'source_id',
         'source_type',
+        'encrypted',
     ];
 
     protected $casts = [
         'recipients' => SerializedObject::class,
-        'mailable' => SerializedMailable::class,
         'status' => EmailStatus::class,
         'attempts' => 'int',
         'attempted_at' => 'timestamp',
+        'send_at' => 'timestamp',
+        'mailable' => SerializedMailable::class,
+        'encrypted' => 'bool',
     ];
 
     public function source(): MorphTo
@@ -72,14 +78,15 @@ class ScheduledEmail extends Model
         ))->jsonSerialize();
     }
 
-    public static function fromMailable(Mailable $mailable, array $recipients, ?Model $source = null): static
+    public static function fromMailable(Mailable $mailable, array $recipients, ?Model $source = null, ?bool $encrypted = false): static
     {
         return static::query()->create([
-            'mailable' => $mailable,
             'recipients' => $recipients,
             'status' => EmailStatus::PENDING,
             'source_id' => $source?->getKey(),
             'source_type' => $source?->getMorphClass(),
+            'encrypted' => $encrypted ?? $mailable instanceof ShouldBeEncrypted,
+            'mailable' => $mailable,
         ]);
     }
 }

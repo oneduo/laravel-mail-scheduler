@@ -16,7 +16,12 @@ it('should create a scheduled email instance for a mailable', function () {
 
     $recipients = recipients();
 
-    ScheduledEmail::fromMailable($mail, $recipients);
+    \Oneduo\MailScheduler\Support\Facades\ScheduledEmail::make(
+        mailable: $mail,
+        recipients: $recipients,
+    )->save();
+
+//    ScheduledEmail::fromMailable($mail, $recipients);
 
     assertDatabaseHas(config('mail-scheduler.table_name'), [
         'mailable' => serialize($mail),
@@ -88,7 +93,7 @@ it('should create a scheduled email instance for an encrypted mailable', functio
 
     $recipients = recipients();
 
-    $mail = ScheduledEmail::fromMailable($mail, $recipients);
+    $mail = ScheduledEmail::fromMailable($mail, $recipients, encrypted: true);
 
     $mailable = $mail->getRawOriginal('mailable');
 
@@ -100,7 +105,7 @@ it('it casts mailable when it implements encryption', function () {
 
     $recipients = recipients();
 
-    $mail = ScheduledEmail::fromMailable($mail, $recipients);
+    $mail = ScheduledEmail::fromMailable($mail, $recipients, encrypted: true);
 
     expect($mail->mailable)->toBeInstanceOf(TestEncryptedMailable::class);
 });

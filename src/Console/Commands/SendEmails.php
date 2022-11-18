@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneduo\MailScheduler\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Oneduo\MailScheduler\Enums\EmailStatus;
 use Oneduo\MailScheduler\Exceptions\InvalidRecipients;
@@ -22,9 +23,14 @@ class SendEmails extends Command
         ScheduledEmail::query()
             ->where('scheduled_emails.status', '<>', EmailStatus::SENT)
             ->where('scheduled_emails.attempts', '<', config('mail-scheduler.max_attempts'))
+            ->where(function (Builder $builder) {
+                $builder
+                    ->whereNull('scheduled_emails.send_at')
+                    ->orWhere('scheduled_emails.send_at', '<=', now());
+            })
             ->oldest()
             ->limit(config('mail-scheduler.batch_size'))
-            ->each(fn (ScheduledEmail $email) => $this->sendEmail($email));
+            ->each(fn(ScheduledEmail $email) => $this->sendEmail($email));
 
         return 0;
     }
