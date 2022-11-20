@@ -9,6 +9,7 @@ use Oneduo\MailScheduler\Enums\EmailStatus;
 use Oneduo\MailScheduler\Models\ScheduledEmail as ScheduledEmailModel;
 use Oneduo\MailScheduler\Support\Facades\ScheduledEmail;
 use Oneduo\MailScheduler\Tests\Support\TestMailable;
+use Symfony\Component\Console\Command\Command;
 use function Pest\Laravel\artisan;
 use function Pest\Laravel\assertDatabaseCount;
 
@@ -18,7 +19,7 @@ it('runs the command and sends the scheduled emails', function () {
     collect(range(1, 10))
         ->each(fn() => ScheduledEmail::make(mailable: mailable(), recipients: recipients())->save());
 
-    artisan(SendEmails::class)->assertOk();
+    artisan(SendEmails::class)->assertExitCode(Command::SUCCESS);
 
     Mail::assertSent(TestMailable::class);
 });
@@ -35,7 +36,7 @@ it('fails to send scheduled emails without recipients', function () {
             ]);
         });
 
-    artisan(SendEmails::class)->assertOk();
+    artisan(SendEmails::class)->assertExitCode(Command::SUCCESS);
 
     $statuses = ScheduledEmailModel::query()->pluck('status');
 
@@ -52,7 +53,7 @@ it('fails to send emails that exceeded max attempts', function () {
         'status' => EmailStatus::PENDING,
     ]);
 
-    artisan(SendEmails::class)->assertOk();
+    artisan(SendEmails::class)->assertExitCode(Command::SUCCESS);
 
     Mail::assertNothingSent();
 });
@@ -66,7 +67,7 @@ it('should not send emails which are already sent', function () {
         'status' => EmailStatus::SENT,
     ]);
 
-    artisan(SendEmails::class)->assertOk();
+    artisan(SendEmails::class)->assertExitCode(Command::SUCCESS);
 
     Mail::assertNothingSent();
 });
