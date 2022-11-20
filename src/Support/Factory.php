@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Oneduo\MailScheduler\Support;
 
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Traits\Macroable;
+use Oneduo\MailScheduler\Models\ScheduledEmail;
 
 class Factory
 {
@@ -15,6 +17,24 @@ class Factory
     protected function newPendingScheduledEmail(): PendingScheduledEmail
     {
         return new PendingScheduledEmail();
+    }
+
+    /**
+     * @param  \Illuminate\Support\Enumerable<int, \Oneduo\MailScheduler\Models\ScheduledEmail>  $emails
+     *
+     * @return void
+     */
+    public function createMany(Enumerable $emails): void
+    {
+        $emails
+            ->chunk(config('mail-scheduler.insert_chunk_size'))
+            ->each(function (Enumerable $chunk) {
+                ScheduledEmail::query()->insert(
+                    $chunk
+                        ->map(fn (ScheduledEmail $scheduledEmail) => $scheduledEmail->getAttributes())
+                        ->toArray()
+                );
+            });
     }
 
     /**
@@ -32,5 +52,4 @@ class Factory
 
         return $this->newPendingScheduledEmail()->{$method}(...$parameters);
     }
-
 }

@@ -6,7 +6,7 @@ namespace Oneduo\MailScheduler\Exceptions;
 
 use Exception;
 
-class InvalidRecipients extends Exception
+class RecipientException extends Exception
 {
     public static function empty(): static
     {

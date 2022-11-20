@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Oneduo\MailScheduler\Enums\EmailStatus;
 use Oneduo\MailScheduler\Exceptions\InvalidRecipients;
+use Oneduo\MailScheduler\Exceptions\RecipientException;
 use Oneduo\MailScheduler\Models\ScheduledEmail;
 use Throwable;
 
@@ -39,7 +40,7 @@ class SendEmails extends Command
     {
         try {
             if (empty(array_filter($email->recipients))) {
-                throw InvalidRecipients::empty();
+                throw RecipientException::empty();
             }
 
             $mailable = (clone $email)->mailable;

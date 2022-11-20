@@ -13,7 +13,8 @@ use Oneduo\MailScheduler\Support\Factory;
  * @method static \Oneduo\MailScheduler\Support\PendingScheduledEmail encrypted($encrypted = true)
  * @method static \Oneduo\MailScheduler\Support\PendingScheduledEmail sendAt($send_at)
  * @method static \Oneduo\MailScheduler\Support\PendingScheduledEmail source($model)
- * @method static \Oneduo\MailScheduler\Support\PendingScheduledEmail make(\Illuminate\Mail\Mailable $mailable, array $recipients, ?\Carbon\Carbon $send_at = null, ?\Illuminate\Database\Eloquent\Model $model = null, ?bool $encrypted = false)
+ * @method static \Oneduo\MailScheduler\Support\PendingScheduledEmail make(\Illuminate\Mail\Mailable $mailable, array $recipients, ?\Carbon\Carbon $send_at = null, ?\Illuminate\Database\Eloquent\Model $source = null, ?bool $encrypted = false)
+ * @method static void createMany(\Illuminate\Support\Enumerable $emails)
  */
 class ScheduledEmail extends Facade
 {

@@ -8,9 +8,11 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Oneduo\MailScheduler\Enums\EmailStatus;
+use Oneduo\MailScheduler\Exceptions\MailableException;
+use Oneduo\MailScheduler\Exceptions\RecipientException;
 use Oneduo\MailScheduler\Models\ScheduledEmail;
 
-class PendingScheduledEmail implements PendingScheduledEmailInt
+class PendingScheduledEmail
 {
     protected ScheduledEmail $scheduledEmail;
 
@@ -74,8 +76,25 @@ class PendingScheduledEmail implements PendingScheduledEmailInt
         return $this;
     }
 
+    public function model(): ScheduledEmail
+    {
+        return $this->scheduledEmail;
+    }
+
+    /**
+     * @throws \Oneduo\MailScheduler\Exceptions\MailableException
+     * @throws \Oneduo\MailScheduler\Exceptions\RecipientException
+     */
     public function save(): ScheduledEmail
     {
+        if (!$this->scheduledEmail->mailable) {
+            throw MailableException::undefined();
+        }
+
+        if (empty($this->scheduledEmail->recipients)) {
+            throw RecipientException::empty();
+        }
+
         $this->scheduledEmail->save();
 
         return $this->scheduledEmail;

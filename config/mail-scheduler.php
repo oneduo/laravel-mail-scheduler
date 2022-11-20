@@ -61,4 +61,16 @@ return [
     */
     'table_name' => env('MAIL_SCHEDULER_TABLE_NAME', 'scheduled_emails'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Insert chunk size
+    |--------------------------------------------------------------------------
+    |
+    | Can be used to define the size of insert chunk when using the createMany
+    | method.
+    |
+    | default: 500
+    */
+    'insert_chunk_size' => (int) env('MAIL_SCHEDULER_INSERT_CHUNK_SIZE', 500),
+
 ];
