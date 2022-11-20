@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Oneduo\MailScheduler\Tests\Support\TestEncryptedMailable;
 use Oneduo\MailScheduler\Tests\Support\TestMailable;
 use Oneduo\MailScheduler\Tests\TestCase;
+use function Pest\Faker\faker;
 
 uses(TestCase::class)->in(__DIR__);
 uses(LazilyRefreshDatabase::class)->in(__DIR__);
@@ -24,6 +25,6 @@ function encryptedMailable(): Mailable
 function recipients(): array
 {
     return [
-        ...collect(range(1, 10))->map(fn() => fake()->email),
+        ...collect(range(1, 10))->map(fn() => faker()->email),
     ];
 }
