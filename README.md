@@ -172,7 +172,7 @@ class Kernel extends ConsoleKernel
 
 ### Error handling
 
-If an exception occurs while sending an email, the exception message and stacktrace will be saved into the model. The command will resend errored emails until `max_attempts` isn't reached.
+If an exception occurs while sending an email, the exception message and stacktrace will be saved into the model. The command will resend emails with an error status till `max_attempts` is reached.
 
 ## Configuration file <a name = "configuration-file"></a>
 
