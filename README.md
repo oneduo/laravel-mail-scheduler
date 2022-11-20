@@ -180,7 +180,7 @@ If an exception occurs while sending an email, the exception message and stacktr
 | Key                 | Description                                                                          | Type     | Default            |
 |---------------------|--------------------------------------------------------------------------------------|----------|--------------------|
 | `max_attempts`      | Maximum number of attempts to send an email                                          | `int`    | `3`                |
-| `batch_size`        | Number of scheduled emails to send in a batch                                        | `int`    | -                  |
+| `batch_size`        | Number of scheduled emails to send in a batch                                        | `int`    | `100`              |
 | `auto_schedule`     | Toggles whether or not to register the send email command into the Laravel scheduler | `bool`   | `true`             |
 | `schedule_cron`     | The CRON expression used to send emails                                              | `bool`   | `true`             |
 | `table_name`        | The table name of the ScheduledEmail model                                           | `string` | `scheduled_emails` |
