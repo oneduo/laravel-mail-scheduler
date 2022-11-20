@@ -1,4 +1,4 @@
-Laravel Mail Scheduler
+# Laravel Mail Scheduler
 
 <div align="left">
 
