@@ -27,6 +27,7 @@
     "spatie/laravel-package-tools": "^1.12"
   },
   "require-dev": {
+    "fakerphp/faker": "^1.9.1",
     "guzzlehttp/guzzle": "^7.0.1",
     "laravel/pint": "^1.2",
     "mockery/mockery": "^1.5",
