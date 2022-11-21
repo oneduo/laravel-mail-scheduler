@@ -53,7 +53,7 @@ That's it, you're ready to go!
 You may publish the package's configuration by running the following command :
 
 ```sh
-php artisan vendor:publish --tag="laravel-mail-scheduler-config"
+php artisan vendor:publish --tag="mail-scheduler-config"
 ```
 
 > **Note** You can find details about the configuration options in the [configuration file section](#configuration-file).
