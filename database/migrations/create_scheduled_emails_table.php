@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create(config('mail-scheduler.table_name'), function (Blueprint $table) {
             $table->id();
-            $table->json('recipients');
+            $table->longText('recipients');
             $table->longText('mailable');
             $table->string('status')->index();
             $table->unsignedInteger('attempts')->default(0);
