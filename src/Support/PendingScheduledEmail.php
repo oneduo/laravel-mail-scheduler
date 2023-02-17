@@ -27,17 +27,26 @@ class PendingScheduledEmail
     public function make(
         Mailable $mailable,
         array    $recipients,
+        ?string  $mailer = null,
         ?Carbon  $send_at = null,
         ?Model   $source = null,
         bool     $encrypted = false,
     ): static
     {
         return (new static())
+            ->mailer($mailer)
             ->mailable($mailable)
             ->to($recipients)
             ->sendAt($send_at)
             ->source($source)
             ->encrypted($encrypted);
+    }
+
+    public function mailer(string $mailer): static
+    {
+        $this->scheduledEmail->mailer = $mailer;
+
+        return $this;
     }
 
     public function mailable(Mailable $mailable): static

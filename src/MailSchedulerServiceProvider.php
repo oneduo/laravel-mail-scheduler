@@ -16,9 +16,8 @@ class MailSchedulerServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-mail-scheduler')
             ->hasConfigFile()
-            ->hasMigration('create_scheduled_emails_table')
-            ->hasCommands(SendEmails::class)
-            ->runsMigrations();
+            ->hasMigrations(['create_scheduled_emails_table', 'add_mailer_to_scheduled_emails_table'])
+            ->hasCommands(SendEmails::class);
     }
 
     public function boot()
