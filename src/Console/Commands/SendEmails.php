@@ -45,7 +45,7 @@ class SendEmails extends Command
 
             $mailable = (clone $email)->mailable;
 
-            Mail::to($email->recipients)->send($mailable);
+            Mail::mailer($email->mailer)->to($email->recipients)->send($mailable);
         } catch (Throwable $throwable) {
             report($throwable);
 

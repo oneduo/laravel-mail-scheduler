@@ -13,6 +13,7 @@ use Oneduo\MailScheduler\Casts\SerializedObject;
 use Oneduo\MailScheduler\Enums\EmailStatus;
 
 /**
+ * @property ?string $mailer
  * @property array $recipients
  * @property \Illuminate\Mail\Mailable $mailable
  * @property \Oneduo\MailScheduler\Enums\EmailStatus $status
@@ -31,6 +32,7 @@ use Oneduo\MailScheduler\Enums\EmailStatus;
 class ScheduledEmail extends Model
 {
     protected $fillable = [
+        'mailer',
         'recipients',
         'mailable',
         'status',
@@ -78,9 +80,10 @@ class ScheduledEmail extends Model
         ))->jsonSerialize();
     }
 
-    public static function fromMailable(Mailable $mailable, array $recipients, ?Model $source = null, ?bool $encrypted = false): static
+    public static function fromMailable(Mailable $mailable, ?string $mailer, array $recipients, ?Model $source = null, ?bool $encrypted = false): static
     {
         return static::query()->create([
+            'mailer' => $mailer,
             'recipients' => $recipients,
             'status' => EmailStatus::PENDING,
             'source_id' => $source?->getKey(),

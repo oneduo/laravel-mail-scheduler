@@ -89,6 +89,22 @@ $instance = ScheduledEmail::mailable(new OrderShipped)
     ->save();
 ```
 
+### Configure mailer
+
+You may want to use a specific mailer for schedule email.  
+
+```php
+<?php
+
+use App\Mail\OrderShipped;
+use Oneduo\MailScheduler\Support\Facades\ScheduledEmail;
+
+$instance = ScheduledEmail::mailable(new OrderShipped)
+    ->to(['john@doe.com'])
+    ->mailer('my_mailer') // mailer defined in config/mail.php
+    ->save();
+```
+
 ### Link email to a source model
 
 You may want to link a ScheduledEmail instance to one of your models using a `morphTo` relationship. It could be a user or a product. It's up to you.
