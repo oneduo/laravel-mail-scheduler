@@ -12,14 +12,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        laravel: [9.*, 8.*]
+        laravel: [11.*, 10.*]
+        php: [ 8.2, 8.1 ]
         include:
-          - laravel: 9.*
-            testbench: ^7.0
-          - laravel: 8.*
-            testbench: ^6.0
+          - laravel: 11.*
+            testbench: ^9.0
+          - laravel: 10.*
+            testbench: ^8.0
+        exclude:
+          - php: 8.1
+            laravel: 11.*
 
-    name: "Test suite : Laravel ${{ matrix.laravel }}"
+    name: "Test suite : PHP ${{ matrix.php }} Laravel ${{ matrix.laravel }}"
 
     services:
       mysql:
@@ -38,7 +42,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 

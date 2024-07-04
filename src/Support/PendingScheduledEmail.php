@@ -42,7 +42,7 @@ class PendingScheduledEmail
             ->encrypted($encrypted);
     }
 
-    public function mailer(string $mailer): static
+    public function mailer(?string $mailer): static
     {
         $this->scheduledEmail->mailer = $mailer;
 
