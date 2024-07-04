@@ -15,4 +15,14 @@ class TestCase extends Orchestra
             MailSchedulerServiceProvider::class,
         ];
     }
+
+    public function getEnvironmentSetUp($app)
+    {
+        config()->set('database.default', 'testing');
+
+        foreach (['create_scheduled_emails_table', 'add_mailer_to_scheduled_emails_table'] as $migration) {
+            $migration = include __DIR__."/../database/migrations/{$migration}.php.stub";
+            $migration->up();
+        }
+    }
 }
